@@ -1,81 +1,168 @@
-# WebApp boilerplate with React JS and Flask API
+# 🔄 Trueketeo
 
-Build web applications using React.js for the front end and python/flask for your backend API.
+**Sistema de intercambio P2P para productos y servicios entre usuarios**
 
-- Documentation can be found here: https://4geeks.com/docs/start/react-flask-template
-- Here is a video on [how to use this template](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
-- Integrated with Pipenv for package managing.
-- Fast deployment to Render [in just a few steps here](https://4geeks.com/docs/start/deploy-to-render-com).
-- Use of .env file.
-- SQLAlchemy integration for database abstraction.
+Plataforma fullstack que permite a usuarios publicar productos, buscar intercambios y gestionar transacciones de trueque de forma segura y eficiente.
 
-### 1) Installation:
+## 🚀 Tech Stack
 
-> If you use Github Codespaces (recommended) or Gitpod this template will already come with Python, Node and the Posgres Database installed. If you are working locally make sure to install Python 3.10, Node 
+**Frontend:** React.js • JavaScript • Bootstrap  
+**Backend:** Python • Flask • SQLAlchemy  
+**Database:** PostgreSQL  
+**Auth:** JWT (JSON Web Tokens)  
+**Deploy:** Render.com
 
-It is recomended to install the backend first, make sure you have Python 3.10, Pipenv and a database engine (Posgress recomended)
+## ✨ Características
 
-1. Install the python packages: `$ pipenv install`
-2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure you replace the valudes with your database information:
+- **Sistema de autenticación** - Registro, login y gestión de sesiones con JWT
+- **Gestión de productos** - Publicar, editar y eliminar productos para intercambio
+- **Sistema de matching** - Búsqueda y filtrado de productos disponibles
+- **Perfiles de usuario** - Gestión completa de datos y productos publicados
+- **API RESTful** - Endpoints bien estructurados con validación de datos
+- **Responsive design** - Interfaz adaptable a dispositivos móviles
 
-| Engine    | DATABASE_URL                                        |
-| --------- | --------------------------------------------------- |
-| SQLite    | sqlite:////test.db                                  |
-| MySQL     | mysql://username:password@localhost:port/example    |
-| Postgress | postgres://username:password@localhost:5432/example |
+## 📋 Requisitos Previos
 
-4. Migrate the migrations: `$ pipenv run migrate` (skip if you have not made changes to the models on the `./src/api/models.py`)
-5. Run the migrations: `$ pipenv run upgrade`
-6. Run the application: `$ pipenv run start`
+- Python 3.10+
+- Node.js 20+
+- PostgreSQL
+- Pipenv
+- npm/yarn
 
-> Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
+## 🛠️ Instalación
 
-### Undo a migration
+### Backend Setup
 
-You are also able to undo a migration by running
+```bash
+# Instalar dependencias de Python
+pipenv install
 
-```sh
-$ pipenv run downgrade
+# Crear archivo de variables de entorno
+cp .env.example .env
+
+# Configurar DATABASE_URL en .env
+# Ejemplo: postgres://username:password@localhost:5432/trueketeo
+
+# Ejecutar migraciones
+pipenv run migrate
+pipenv run upgrade
+
+# Iniciar servidor backend
+pipenv run start
 ```
 
-### Backend Populate Table Users
+### Frontend Setup
 
-To insert test users in the database execute the following command:
+```bash
+# Instalar dependencias de Node
+npm install
 
-```sh
-$ flask insert-test-users 5
+# Iniciar servidor de desarrollo
+npm run start
 ```
 
-And you will see the following message:
+La aplicación estará disponible en `http://localhost:3000`
+
+## 🗄️ Estructura de Base de Datos
+
+### Modelos principales:
+- **User** - Usuarios de la plataforma
+- **Product** - Productos disponibles para intercambio
+- **Exchange** - Transacciones de trueque
+- **Category** - Categorías de productos
+
+## 🔑 Variables de Entorno
+
+```env
+DATABASE_URL=postgres://user:password@localhost:5432/dbname
+FLASK_APP=src/app.py
+FLASK_ENV=development
+JWT_SECRET_KEY=your-secret-key
+```
+
+## 📡 API Endpoints
+
+### Autenticación
+```
+POST /api/auth/signup    - Registro de usuario
+POST /api/auth/login     - Inicio de sesión
+GET  /api/auth/profile   - Obtener perfil (protegido)
+```
+
+### Productos
+```
+GET    /api/products        - Listar productos
+POST   /api/products        - Crear producto (protegido)
+GET    /api/products/:id    - Detalle de producto
+PUT    /api/products/:id    - Actualizar producto (protegido)
+DELETE /api/products/:id    - Eliminar producto (protegido)
+```
+
+### Usuario
+```
+GET  /api/users/:id         - Perfil público de usuario
+GET  /api/users/:id/products - Productos de un usuario
+```
+
+## 🧪 Testing
+
+```bash
+# Insertar usuarios de prueba
+flask insert-test-users 5
+
+# Insertar datos de prueba personalizados
+pipenv run insert-test-data
+```
+
+## 📦 Deploy
+
+### Deploy en Render.com
+
+1. Conectar repositorio de GitHub
+2. Configurar variables de entorno
+3. Deploy automático con cada push a main
+
+Para más detalles: [Render Deployment Guide](https://4geeks.com/docs/start/deploy-to-render-com)
+
+## 🏗️ Arquitectura del Proyecto
 
 ```
-  Creating test users
-  test_user1@test.com created.
-  test_user2@test.com created.
-  test_user3@test.com created.
-  test_user4@test.com created.
-  test_user5@test.com created.
-  Users created successfully!
+src/
+├── api/
+│   ├── models.py          # Modelos SQLAlchemy
+│   ├── routes.py          # Definición de rutas
+│   ├── commands.py        # CLI commands
+│   └── utils.py           # Utilidades
+├── front/
+│   ├── js/
+│   │   ├── component/     # Componentes React
+│   │   ├── pages/         # Páginas principales
+│   │   ├── store/         # Estado global (Flux)
+│   │   └── layout.js      # Layout principal
+│   └── styles/            # Estilos CSS
+└── app.py                 # Entry point Flask
 ```
 
-### **Important note for the database and the data inside it**
+## 📝 Comandos Útiles
 
-Every Github codespace environment will have **its own database**, so if you're working with more people eveyone will have a different database and different records inside it. This data **will be lost**, so don't spend too much time manually creating records for testing, instead, you can automate adding records to your database by editing ```commands.py``` file inside ```/src/api``` folder. Edit line 32 function ```insert_test_data``` to insert the data according to your model (use the function ```insert_test_users``` above as an example). Then, all you need to do is run ```pipenv run insert-test-data```.
+```bash
+# Revertir última migración
+pipenv run downgrade
 
-### Front-End Manual Installation:
+# Conectar a PostgreSQL (Codespaces)
+psql -h localhost -U gitpod trueketeo
 
--   Make sure you are using node version 20 and that you have already successfully installed and runned the backend.
+# Limpiar caché de Python
+find . -type d -name __pycache__ -exec rm -r {} +
+```
 
-1. Install the packages: `$ npm install`
-2. Start coding! start the webpack dev server `$ npm run start`
+## 🐛 Troubleshooting
 
-## Publish your website!
+**Error de conexión a base de datos:**
+- Verificar que PostgreSQL esté corriendo
+- Comprobar DATABASE_URL en .env
+- Asegurar que la base de datos existe
 
-This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter of minutes. Please read the [official documentation about it](https://4geeks.com/docs/start/deploy-to-render-com).
-
-### Contributors
-
-This template was built as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
-
-You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).
+**Error en migraciones:**
+- Ejecutar `pipenv run downgrade` y luego `pipenv run upgrade`
+- Revisar models.py por errores de sintaxis
